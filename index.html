@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vertolotik</title>
+<style>
+	body {
+	margin: auto;
+	overflow: hidden;}
+</style>
+</head>
+
+<script src="./js/Three.js"></script>
+<script src="./js/KeyboardState.js"></script>
+
+<script>
+var container, scene, renderer;
+var plane, box;
+var geometry,loader, model1, model2,propel;
+var keyboard = new KeyboardState();
+var clock = new THREE.Clock();
+var chaseCamera, topCamera;
+var chaseCameraActive = false;
+function initScene() 
+{
+    renderer = new THREE.WebGLRenderer(  );
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
+    container.appendChild( renderer.domElement );
+
+    scene = new THREE.Scene();
+
+	var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+	topCamera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	scene.add(topCamera);
+	topCamera.position.set(0, 150, 400);
+	topCamera.lookAt(scene.position);
+	// camera 2
+	chaseCamera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	scene.add(chaseCamera);
+
+    //controls = new THREE.TrackballControls( camera );
+		
+	//loader = new THREE.JSONLoader();
+    //loader.load( "models/pawn.js", function( geometry ) {
+   // model1 = new THREE.Mesh( geometry, new THREE.MeshNormalMaterial() );
+   // model1.position.set(0,74,0);
+   // scene.add( model1 );
+   // } );
+	
+	loader = new THREE.JSONLoader();
+    loader.load( "models/vertolet.js", function( geometry, materials ) {
+	var texture = THREE.ImageUtils.loadTexture( "models/f771f392.jpg" );
+var material = new THREE.MeshBasicMaterial( { map : texture } ); 
+    model2 = new THREE.Mesh( geometry, material );
+    model2.position.set(50,74,0);
+	model2.scale.set(10.3,10.3,10.3);
+    scene.add( model2 );
+    } );
+	
+	loader = new THREE.JSONLoader();
+    loader.load( "models/prope.js", function( geometry, materials ) {
+	var texture = THREE.ImageUtils.loadTexture( "models/f771f392.jpg" );
+var material = new THREE.MeshBasicMaterial( { map : texture } ); 
+    propel = new THREE.Mesh( geometry, material );
+    propel.position.set(50,74,0);
+	propel.scale.set(10.3,10.3,10.3);
+    scene.add( propel );
+    } );
+	
+	
+	
+    var PlaneGeometry = new THREE.PlaneGeometry(5000, 5000, 1, 1);
+	var PlaneTexture = new THREE.ImageUtils.loadTexture( 'images/sand.jpg' );
+	PlaneTexture.wrapS = PlaneTexture.wrapT = THREE.RepeatWrapping; 
+	PlaneTexture.repeat.set( 1, 1 );
+	var PlaneMaterial = new THREE.MeshBasicMaterial( { map: PlaneTexture, side: THREE.DoubleSide } );
+	plane = new THREE.Mesh(PlaneGeometry, PlaneMaterial);
+	plane.position.y = -0.5;
+	plane.rotation.x = Math.PI / 2;
+	scene.add(plane);
+	
+	var BoxGeometry = new THREE.SphereGeometry( 10000, 60, 60 );
+	var texture = THREE.ImageUtils.loadTexture("images/sky.jpg");
+	var BoxMaterial = new THREE.MeshBasicMaterial( {map:texture,side:THREE.DoubleSide} );
+	box = new THREE.Mesh( BoxGeometry, BoxMaterial );
+	scene.add(box);
+
+}
+
+function animateScene() 
+{
+    requestAnimationFrame( animateScene);
+	renderScene();		
+	update();
+	propel.rotation.y -= 0.8;
+	propel.position = model2.position;
+}
+
+function key ()
+{
+	var delta = clock.getDelta(); // seconds.
+	var moveDistance = 200 * delta; // 200 pixels per second
+	var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+	
+	// local transformations
+
+	// move forwards/backwards/left/right
+	if ( keyboard.pressed("W") && model2.position.y > 1)
+		model2.translateZ(  moveDistance );
+	if ( keyboard.pressed("S") && model2.position.y > 1)
+		model2.translateZ( -moveDistance );
+	if ( keyboard.pressed("E") && model2.position.y > 1)
+		model2.translateX( -moveDistance );
+	if ( keyboard.pressed("Q") && model2.position.y > 1)
+		model2.translateX(  moveDistance );	
+
+	// rotate left/right/up/down
+	var rotation_matrix = new THREE.Matrix4().identity();
+	if ( keyboard.pressed("A") && model2.position.y > 1)
+		model2.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+	if ( keyboard.pressed("D") && model2.position.y > 1)
+		model2.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+	if ( keyboard.pressed("F") && model2.position.y > 1)
+		model2.translateY(-3);		
+	if ( keyboard.pressed("R") )
+		model2.translateY(3);	
+	
+	var relativeCameraOffset = new THREE.Vector3(0,20,-50);
+
+	var cameraOffset = relativeCameraOffset.applyMatrix4( model2.matrixWorld );
+
+	chaseCamera.position.x = cameraOffset.x;
+	chaseCamera.position.y = cameraOffset.y;
+	chaseCamera.position.z = cameraOffset.z;
+	chaseCamera.lookAt( model2.position );
+	
+	//camera.updateMatrix();
+	//camera.updateProjectionMatrix();
+	/*
+	if ( keyboard.pressed("A") && model2.position.y > 1)
+		model2.rotation.y += 0.01;		
+	if ( keyboard.pressed("D") && model2.position.y > 1)
+		model2.rotation.y -= 0.01;
+		
+	if ( keyboard.pressed("S") && model2.position.y > 1)
+		model2.translateZ(-4);		
+	if ( keyboard.pressed("W") && model2.position.y > 1)
+		model2.translateZ(4);
+		
+	if ( keyboard.pressed("E") && model2.position.y > 1)
+		model2.translateY(-3);		
+	if ( keyboard.pressed("Q") )
+		model2.translateY(3);	
+		*/
+	if ( keyboard.pressed("1") )
+	{  chaseCameraActive = true;  }
+	if ( keyboard.pressed("2") )
+	{  chaseCameraActive = false;  }
+}
+
+function update()
+{	
+    key();
+	//controls.update();
+	keyboard.update();
+}
+
+function renderScene() 
+{	
+	if (chaseCameraActive)
+	{  renderer.render( scene, chaseCamera );  }
+	else
+	{  renderer.render( scene, topCamera );  }
+}
+
+function onLoad()
+{
+    initScene();
+    animateScene();
+}
+</script>
+<body onLoad="onLoad();">
+<div id="container">
+</div>
+</body>
+</html>
