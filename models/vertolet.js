@@ -22,19 +22,19 @@
 "colorSpecular"  : [0.9000, 0.9000, 0.9000],
 "transparency"  : 1.0,
 "specularCoef"  : 10.0,
-"mapDiffuse"    : "f771f392.dds",
+"mapDiffuse"    : "f771f392.jpg",
 "vertexColors" : false
 },
 
 {
 "DbgIndex" : 1,
-"DbgName"  : "8f6d5f5e.dds",
+"DbgName"  : "8f6d5f5e.jpg",
 "colorDiffuse"  : [0.7000, 0.7000, 0.7000],
 "colorAmbient"  : [0.7000, 0.7000, 0.7000],
 "colorSpecular"  : [1.0000, 1.0000, 1.0000],
 "transparency"  : 1.0,
 "specularCoef"  : 10.0,
-"mapDiffuse"    : "8f6d5f5e.dds",
+"mapDiffuse"    : "f771f392.jpg",
 "vertexColors" : false
 },
 
@@ -46,19 +46,19 @@
 "colorSpecular"  : [0.9000, 0.9000, 0.9000],
 "transparency"  : 1.0,
 "specularCoef"  : 10.0,
-"mapDiffuse"    : "8f6d5f5e.dds",
+"mapDiffuse"    : "f771f392.jpg",
 "vertexColors" : false
 },
 
 {
 "DbgIndex" : 3,
-"DbgName"  : "09bb962b.dds",
+"DbgName"  : "09bb962b.jpg",
 "colorDiffuse"  : [0.7000, 0.7000, 0.7000],
 "colorAmbient"  : [0.7000, 0.7000, 0.7000],
 "colorSpecular"  : [1.0000, 1.0000, 1.0000],
 "transparency"  : 1.0,
 "specularCoef"  : 10.0,
-"mapDiffuse"    : "09bb962b.dds",
+"mapDiffuse"    : "f771f392.jpg",
 "vertexColors" : false
 },
 
@@ -70,7 +70,7 @@
 "colorSpecular"  : [0.9000, 0.9000, 0.9000],
 "transparency"  : 1.0,
 "specularCoef"  : 10.0,
-"mapDiffuse"    : "09bb962b.dds",
+"mapDiffuse"    : "f771f392.jpg",
 "vertexColors" : false
 },
 

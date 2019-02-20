@@ -94,70 +94,74 @@ function animateScene()
     requestAnimationFrame( animateScene);
 	renderScene();		
 	update();
-	propel.rotation.y -= 0.8;
-	propel.position = model2.position;
+	if (propel && model2) {		
+		propel.rotation.y -= 0.8;
+		propel.position = model2.position;
+	}
 }
 
 function key ()
 {
-	var delta = clock.getDelta(); // seconds.
-	var moveDistance = 200 * delta; // 200 pixels per second
-	var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
-	
-	// local transformations
-
-	// move forwards/backwards/left/right
-	if ( keyboard.pressed("W") && model2.position.y > 1)
-		model2.translateZ(  moveDistance );
-	if ( keyboard.pressed("S") && model2.position.y > 1)
-		model2.translateZ( -moveDistance );
-	if ( keyboard.pressed("E") && model2.position.y > 1)
-		model2.translateX( -moveDistance );
-	if ( keyboard.pressed("Q") && model2.position.y > 1)
-		model2.translateX(  moveDistance );	
-
-	// rotate left/right/up/down
-	var rotation_matrix = new THREE.Matrix4().identity();
-	if ( keyboard.pressed("A") && model2.position.y > 1)
-		model2.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
-	if ( keyboard.pressed("D") && model2.position.y > 1)
-		model2.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-	if ( keyboard.pressed("F") && model2.position.y > 1)
-		model2.translateY(-3);		
-	if ( keyboard.pressed("R") )
-		model2.translateY(3);	
-	
-	var relativeCameraOffset = new THREE.Vector3(0,20,-50);
-
-	var cameraOffset = relativeCameraOffset.applyMatrix4( model2.matrixWorld );
-
-	chaseCamera.position.x = cameraOffset.x;
-	chaseCamera.position.y = cameraOffset.y;
-	chaseCamera.position.z = cameraOffset.z;
-	chaseCamera.lookAt( model2.position );
-	
-	//camera.updateMatrix();
-	//camera.updateProjectionMatrix();
-	/*
-	if ( keyboard.pressed("A") && model2.position.y > 1)
-		model2.rotation.y += 0.01;		
-	if ( keyboard.pressed("D") && model2.position.y > 1)
-		model2.rotation.y -= 0.01;
+	if (model2) {
+		var delta = clock.getDelta(); // seconds.
+		var moveDistance = 200 * delta; // 200 pixels per second
+		var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 		
-	if ( keyboard.pressed("S") && model2.position.y > 1)
-		model2.translateZ(-4);		
-	if ( keyboard.pressed("W") && model2.position.y > 1)
-		model2.translateZ(4);
+		// local transformations
+
+		// move forwards/backwards/left/right
+		if ( keyboard.pressed("W") && model2.position.y > 1)
+			model2.translateZ(  moveDistance );
+		if ( keyboard.pressed("S") && model2.position.y > 1)
+			model2.translateZ( -moveDistance );
+		if ( keyboard.pressed("E") && model2.position.y > 1)
+			model2.translateX( -moveDistance );
+		if ( keyboard.pressed("Q") && model2.position.y > 1)
+			model2.translateX(  moveDistance );	
+
+		// rotate left/right/up/down
+		var rotation_matrix = new THREE.Matrix4().identity();
+		if ( keyboard.pressed("A") && model2.position.y > 1)
+			model2.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+		if ( keyboard.pressed("D") && model2.position.y > 1)
+			model2.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+		if ( keyboard.pressed("F") && model2.position.y > 1)
+			model2.translateY(-3);		
+		if ( keyboard.pressed("R") )
+			model2.translateY(3);	
 		
-	if ( keyboard.pressed("E") && model2.position.y > 1)
-		model2.translateY(-3);		
-	if ( keyboard.pressed("Q") )
-		model2.translateY(3);	
-		*/
-	if ( keyboard.pressed("1") )
-	{  chaseCameraActive = true;  }
-	if ( keyboard.pressed("2") )
-	{  chaseCameraActive = false;  }
+		var relativeCameraOffset = new THREE.Vector3(0,20,-50);
+
+		var cameraOffset = relativeCameraOffset.applyMatrix4( model2.matrixWorld );
+
+		chaseCamera.position.x = cameraOffset.x;
+		chaseCamera.position.y = cameraOffset.y;
+		chaseCamera.position.z = cameraOffset.z;
+		chaseCamera.lookAt( model2.position );
+		
+		//camera.updateMatrix();
+		//camera.updateProjectionMatrix();
+		/*
+		if ( keyboard.pressed("A") && model2.position.y > 1)
+			model2.rotation.y += 0.01;		
+		if ( keyboard.pressed("D") && model2.position.y > 1)
+			model2.rotation.y -= 0.01;
+			
+		if ( keyboard.pressed("S") && model2.position.y > 1)
+			model2.translateZ(-4);		
+		if ( keyboard.pressed("W") && model2.position.y > 1)
+			model2.translateZ(4);
+			
+		if ( keyboard.pressed("E") && model2.position.y > 1)
+			model2.translateY(-3);		
+		if ( keyboard.pressed("Q") )
+			model2.translateY(3);	
+			*/
+		if ( keyboard.pressed("1") )
+		{  chaseCameraActive = true;  }
+		if ( keyboard.pressed("2") )
+		{  chaseCameraActive = false;  }
+	}
 }
 
 function update()

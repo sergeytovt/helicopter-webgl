@@ -22,7 +22,7 @@
 "colorSpecular"  : [0.9000, 0.9000, 0.9000],
 "transparency"  : 1.0,
 "specularCoef"  : 10.0,
-"mapDiffuse"    : "f771f392.dds",
+"mapDiffuse"    : "f771f392.jpg",
 "vertexColors" : false
 }
 
